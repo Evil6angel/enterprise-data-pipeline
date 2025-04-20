@@ -1,0 +1,8 @@
+version: '3.8'
+
+networks:
+  data_pipeline_network:
+    driver: bridge
+
+services:
+  # We'll add services here as we progress
