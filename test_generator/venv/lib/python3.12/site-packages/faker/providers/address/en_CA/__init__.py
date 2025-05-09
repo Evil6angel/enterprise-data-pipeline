@@ -2,11 +2,12 @@ import re
 
 from typing import Optional
 
+from faker.providers import ElementsType
+
 from ..en import Provider as AddressProvider
 
 
 class Provider(AddressProvider):
-
     #  Source: https://www.canadapost.ca/tools/pg/manual/PGaddress-e.asp#1449294
     #
     #  'W' and 'Z' are valid in non-initial position (easily verified in the
@@ -33,9 +34,9 @@ class Provider(AddressProvider):
         "Y",
     )
 
-    city_prefixes = ("North", "East", "West", "South", "New", "Lake", "Port")
+    city_prefixes: ElementsType[str] = ("North", "East", "West", "South", "New", "Lake", "Port")
 
-    city_suffixes = (
+    city_suffixes: ElementsType[str] = (
         "town",
         "ton",
         "land",
@@ -337,7 +338,7 @@ class Provider(AddressProvider):
         "YT": ["Y"],
     }
 
-    city_formats = (
+    city_formats: ElementsType[str] = (
         "{{city_prefix}} {{first_name}}{{city_suffix}}",
         "{{city_prefix}} {{first_name}}",
         "{{first_name}}{{city_suffix}}",

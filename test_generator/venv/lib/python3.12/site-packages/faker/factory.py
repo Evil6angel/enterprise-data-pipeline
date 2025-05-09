@@ -1,3 +1,4 @@
+import functools
 import locale as pylocale
 import logging
 import sys
@@ -25,7 +26,7 @@ class Factory:
         cls,
         locale: Optional[str] = None,
         providers: Optional[List[str]] = None,
-        generator: Generator = None,
+        generator: Optional[Generator] = None,
         includes: Optional[List[str]] = None,
         # Should we use weightings (more realistic) or weight every element equally (faster)?
         # By default, use weightings for backwards compatibility & realism
@@ -64,17 +65,16 @@ class Factory:
         return faker
 
     @classmethod
+    @functools.lru_cache(maxsize=None)
     def _find_provider_class(
         cls,
         provider_path: str,
         locale: Optional[str] = None,
     ) -> Tuple[Any, Optional[str], Optional[str]]:
-
         provider_module = import_module(provider_path)
         default_locale = getattr(provider_module, "default_locale", "")
 
         if getattr(provider_module, "localized", False):
-
             logger.debug(
                 "Looking for locale `%s` in provider `%s`.",
                 locale,
@@ -104,7 +104,6 @@ class Factory:
             provider_module = import_module(path)
 
         else:
-
             if locale:
                 logger.debug(
                     "Provider `%s` does not feature localization. "

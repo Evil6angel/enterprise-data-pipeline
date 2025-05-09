@@ -4,7 +4,6 @@ from .. import Provider as AddressProvider
 
 
 class Provider(AddressProvider):
-
     city_formats = ("{{first_name}}",)
     city_prefixes = ("ք.",)
     city_suffixes = ("",)
@@ -205,7 +204,7 @@ class Provider(AddressProvider):
         "Լիտվա",
         "Լյուքսեմբուրգ",
         "Մակաո",
-        "Մակեդոնիա",
+        "Հյուսիսային Մակեդոնիա",
         "Մադագասկար",
         "Մալավի",
         "Մալազիա",

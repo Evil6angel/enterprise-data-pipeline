@@ -1,28 +1,10 @@
 from collections import OrderedDict
-from typing import Dict, List, Optional, TypeVar
+from typing import Dict, List, Optional
 
-from ...typing import DateParseType
+from ...typing import CardType, CreditCard, DateParseType
 from .. import BaseProvider
 
 localized = True
-
-CardType = TypeVar("CardType", "CreditCard", str)
-
-
-class CreditCard:
-    def __init__(
-        self,
-        name: str,
-        prefixes: List[str],
-        length: int = 16,
-        security_code: str = "CVC",
-        security_code_length: int = 3,
-    ) -> None:
-        self.name = name
-        self.prefixes = prefixes
-        self.length = length
-        self.security_code = security_code
-        self.security_code_length = security_code_length
 
 
 class Provider(BaseProvider):
@@ -130,7 +112,7 @@ class Provider(BaseProvider):
     def credit_card_provider(self, card_type: Optional[CardType] = None) -> str:
         """Generate a credit card provider name."""
         if card_type is None:
-            card_type = self.random_element(self.credit_card_types.keys())
+            card_type = self.random_element(self.credit_card_types.keys())  # type: ignore[assignment]
         return self._credit_card_type(card_type).name
 
     def credit_card_number(self, card_type: Optional[CardType] = None) -> str:
@@ -161,7 +143,7 @@ class Provider(BaseProvider):
         """Generate a set of credit card details."""
         card = self._credit_card_type(card_type)
 
-        tpl = "{provider}\n" "{owner}\n" "{number} {expire_date}\n" "{security}: {security_nb}\n"
+        tpl = "{provider}\n{owner}\n{number} {expire_date}\n{security}: {security_nb}\n"
 
         tpl = tpl.format(
             provider=card.name,
@@ -182,10 +164,10 @@ class Provider(BaseProvider):
     def _credit_card_type(self, card_type: Optional[CardType] = None) -> CreditCard:
         """Generate a random CreditCard instance of the specified card type."""
         if card_type is None:
-            card_type = self.random_element(self.credit_card_types.keys())
+            card_type = self.random_element(self.credit_card_types.keys())  # type: ignore[assignment]
         elif isinstance(card_type, CreditCard):
             return card_type
-        return self.credit_card_types[card_type]
+        return self.credit_card_types[card_type]  # type: ignore[index]
 
     def _generate_number(self, prefix: str, length: int) -> str:
         """Generate a credit card number.

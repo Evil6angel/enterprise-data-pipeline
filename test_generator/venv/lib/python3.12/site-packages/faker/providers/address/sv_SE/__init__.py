@@ -2,7 +2,6 @@ from .. import Provider as AddressProvider
 
 
 class Provider(AddressProvider):
-
     building_number_formats = ("###", "##", "#")
 
     street_name_formats = ("{{street_prefix}}{{street_suffix}}",)
@@ -222,7 +221,6 @@ class Provider(AddressProvider):
         "Luxemburg",
         "Macao",
         "Madagaskar",
-        "Makedonien",
         "Malawi",
         "Malaysia",
         "Maldiverna",
@@ -254,6 +252,7 @@ class Provider(AddressProvider):
         "Nigeria",
         "Niue",
         "Nordkorea",
+        "Nordmakedonien",
         "Nordmarianerna",
         "Norfolkön",
         "Norge",

@@ -1,4 +1,4 @@
-#!/home/kenza/projects/enterprise-data-pipeline/test_generator/venv/bin/python3
+#!/home/kenza/pipeline/enterprise-data-pipeline/test_generator/venv/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

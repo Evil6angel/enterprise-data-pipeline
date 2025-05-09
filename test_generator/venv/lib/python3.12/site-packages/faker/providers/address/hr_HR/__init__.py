@@ -2,7 +2,6 @@ from .. import Provider as AddressProvider
 
 
 class Provider(AddressProvider):
-
     city_formats = ("{{city_name}}",)
 
     street_name_formats = ("{{street_name}}",)
@@ -462,7 +461,6 @@ class Provider(AddressProvider):
         "Mađarska",
         "Majote",
         "Makao",
-        "Makedonija",
         "Malavi",
         "Maldivi Maldives",
         "Malezija",
@@ -526,6 +524,7 @@ class Provider(AddressProvider):
         "Sint Maarten",
         "Sirija",
         "Sjedinjene Američke Države",
+        "Sjeverna Makedonija",
         "Sjeverni Marijanski Otoci",
         "Slovačka",
         "Slovenija",

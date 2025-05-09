@@ -2,7 +2,6 @@ from .. import Provider as AddressProvider
 
 
 class Provider(AddressProvider):
-
     building_number_formats = (
         "###",
         "##",
@@ -250,6 +249,7 @@ class Provider(AddressProvider):
         "Γρενάδα",
         "Γροιλανδία",
         "Δανία",
+        "Δημοκρατία της Βόρειας Μακεδονίας",
         "Δημοκρατία της Κορέας",
         "Δομινίκα",
         "Δομινικανή Δημοκρατία",
@@ -375,7 +375,6 @@ class Provider(AddressProvider):
         "Ουζμπεκιστάν",
         "Ουκρανία",
         "Ουρουγουάη",
-        "Π.Γ.Δ. Μακεδονίας",
         "Πακιστάν",
         "Παλάου",
         "Παλαιστίνη",

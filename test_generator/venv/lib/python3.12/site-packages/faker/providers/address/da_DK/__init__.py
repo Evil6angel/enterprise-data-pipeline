@@ -2,7 +2,6 @@ from .. import Provider as AddressProvider
 
 
 class Provider(AddressProvider):
-
     # Building numbers don't go higher than a 1000
     building_number_formats = ("%##", "%#", "%")
 
@@ -2393,7 +2392,6 @@ class Provider(AddressProvider):
         "Litauen",
         "Luxembourg",
         "Madagaskar",
-        "Makedonien",
         "Malawi",
         "Malaysia",
         "Maldiverne",
@@ -2421,6 +2419,7 @@ class Provider(AddressProvider):
         "Nigeria",
         "Niue",
         "Nordkorea",
+        "Nordmakedonien",
         "Norge",
         "Oman",
         "Pakistan",

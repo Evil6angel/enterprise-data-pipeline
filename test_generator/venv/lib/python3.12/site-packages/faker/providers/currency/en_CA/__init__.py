@@ -2,8 +2,7 @@ from .. import Provider as CurrencyProvider
 
 
 class Provider(CurrencyProvider):
-
     price_formats = ["#.##", "%#.##", "%##.##", "%,###.##", "%#,###.##"]
 
     def pricetag(self):
-        return "$\N{no-break space}" + self.numerify(self.random_element(self.price_formats))
+        return "$\N{NO-BREAK SPACE}" + self.numerify(self.random_element(self.price_formats))

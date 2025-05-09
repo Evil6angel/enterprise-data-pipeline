@@ -1,4 +1,4 @@
-from typing import Sequence
+from faker.utils.datasets import add_ordereddicts
 
 from .. import BaseProvider, ElementsType
 
@@ -6,14 +6,14 @@ localized = True
 
 
 class Provider(BaseProvider):
-    formats: ElementsType = ["{{first_name}} {{last_name}}"]
+    formats: ElementsType[str] = ["{{first_name}} {{last_name}}"]
 
-    first_names: ElementsType = ["John", "Jane"]
+    first_names: ElementsType[str] = ["John", "Jane"]
 
-    last_names: ElementsType = ["Doe"]
+    last_names: ElementsType[str] = ["Doe"]
 
     # https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-    language_names: ElementsType = [
+    language_names: ElementsType[str] = [
         "Afar",
         "Abkhazian",
         "Avestan",
@@ -200,7 +200,7 @@ class Provider(BaseProvider):
 
     def name(self) -> str:
         """
-        :example 'John Doe'
+        :example: 'John Doe'
         """
         pattern: str = self.random_element(self.formats)
         return self.generator.parse(pattern)
@@ -269,8 +269,10 @@ class Provider(BaseProvider):
         if hasattr(self, "prefixes"):
             return self.random_element(self.prefixes)  # type: ignore[attr-defined]
         if hasattr(self, "prefixes_male") and hasattr(self, "prefixes_female") and hasattr(self, "prefixes_nonbinary"):
-            prefixes: Sequence[ElementsType] = self.random_element(
-                (self.prefixes_male, self.prefixes_female, self.prefixes_nonbinary)  # type: ignore[attr-defined]
+            prefixes = add_ordereddicts(
+                self.prefixes_male,  # type: ignore[attr-defined]
+                self.prefixes_female,  # type: ignore[attr-defined]
+                self.prefixes_nonbinary,  # type: ignore[attr-defined]
             )
             return self.random_element(prefixes)
         if hasattr(self, "prefixes_male") and hasattr(self, "prefixes_female"):
@@ -297,8 +299,10 @@ class Provider(BaseProvider):
         if hasattr(self, "suffixes"):
             return self.random_element(self.suffixes)  # type: ignore[attr-defined]
         if hasattr(self, "suffixes_male") and hasattr(self, "suffixes_female") and hasattr(self, "suffixes_nonbinary"):
-            suffixes: Sequence[ElementsType] = self.random_element(
-                (self.suffixes_male, self.suffixes_female, self.suffixes_nonbinary)  # type: ignore[attr-defined]
+            suffixes = add_ordereddicts(
+                self.suffixes_male,  # type: ignore[attr-defined]
+                self.suffixes_female,  # type: ignore[attr-defined]
+                self.suffixes_nonbinary,  # type: ignore[attr-defined]
             )
             return self.random_element(suffixes)
         if hasattr(self, "suffixes_male") and hasattr(self, "suffixes_female"):

@@ -2,7 +2,6 @@ from ..de import Provider as AddressProvider
 
 
 class Provider(AddressProvider):
-
     city_formats = ("{{city_name}}",)
 
     city_with_postcode_formats = ("{{postcode}} {{city}}",)
@@ -248,6 +247,18 @@ class Provider(AddressProvider):
         "Salzburg",
         "Kärnten",
         "Vorarlberg",
+    )
+
+    municipality_key_formats = (
+        "1####",
+        "2####",
+        "3####",
+        "4####",
+        "5####",
+        "6####",
+        "7####",
+        "8####",
+        "9####",
     )
 
     def street_suffix_short(self) -> str:

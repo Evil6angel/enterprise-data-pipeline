@@ -5,6 +5,7 @@ from ...decode import unidecode
 from ...utils.decorators import lowercase, slugify, slugify_unicode
 from ...utils.distribution import choices_distribution
 from .. import BaseProvider, ElementsType
+from ..lorem.en_US import Provider as USLoremProvider
 
 localized = True
 
@@ -56,9 +57,9 @@ class _IPv4Constants:
 
 
 class Provider(BaseProvider):
-    safe_domain_names: ElementsType = ("example.org", "example.com", "example.net")
-    free_email_domains: ElementsType = ("gmail.com", "yahoo.com", "hotmail.com")
-    tlds: ElementsType = (
+    safe_domain_names: ElementsType[str] = ("example.org", "example.com", "example.net")
+    free_email_domains: ElementsType[str] = ("gmail.com", "yahoo.com", "hotmail.com")
+    tlds: ElementsType[str] = (
         "com",
         "com",
         "com",
@@ -70,7 +71,7 @@ class Provider(BaseProvider):
         "net",
         "org",
     )
-    hostname_prefixes: ElementsType = (
+    hostname_prefixes: ElementsType[str] = (
         "db",
         "srv",
         "desktop",
@@ -79,7 +80,7 @@ class Provider(BaseProvider):
         "email",
         "web",
     )
-    uri_pages: ElementsType = (
+    uri_pages: ElementsType[str] = (
         "index",
         "home",
         "search",
@@ -95,7 +96,7 @@ class Provider(BaseProvider):
         "privacy",
         "author",
     )
-    uri_paths: ElementsType = (
+    uri_paths: ElementsType[str] = (
         "app",
         "main",
         "wp-content",
@@ -109,7 +110,7 @@ class Provider(BaseProvider):
         "list",
         "explore",
     )
-    uri_extensions: ElementsType = (
+    uri_extensions: ElementsType[str] = (
         ".html",
         ".html",
         ".html",
@@ -120,7 +121,7 @@ class Provider(BaseProvider):
         ".jsp",
         ".asp",
     )
-    http_methods: ElementsType = (
+    http_methods: ElementsType[str] = (
         "GET",
         "HEAD",
         "POST",
@@ -131,33 +132,88 @@ class Provider(BaseProvider):
         "TRACE",
         "PATCH",
     )
+    http_assigned_codes: ElementsType[int] = (
+        100,
+        101,
+        102,
+        103,
+        200,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        226,
+        300,
+        301,
+        302,
+        303,
+        304,
+        305,
+        307,
+        308,
+        400,
+        401,
+        402,
+        403,
+        404,
+        405,
+        406,
+        407,
+        408,
+        409,
+        410,
+        411,
+        412,
+        413,
+        414,
+        415,
+        416,
+        417,
+        421,
+        422,
+        423,
+        424,
+        425,
+        426,
+        428,
+        429,
+        431,
+        451,
+        500,
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        510,
+        511,
+    )
 
-    user_name_formats: ElementsType = (
+    user_name_formats: ElementsType[str] = (
         "{{last_name}}.{{first_name}}",
         "{{first_name}}.{{last_name}}",
         "{{first_name}}##",
         "?{{last_name}}",
     )
-    email_formats: ElementsType = (
+    email_formats: ElementsType[str] = (
         "{{user_name}}@{{domain_name}}",
         "{{user_name}}@{{free_email_domain}}",
     )
-    url_formats: ElementsType = (
+    url_formats: ElementsType[str] = (
         "www.{{domain_name}}/",
         "{{domain_name}}/",
     )
-    uri_formats: ElementsType = (
-        "{{url}}",
-        "{{url}}{{uri_page}}/",
-        "{{url}}{{uri_page}}{{uri_extension}}",
-        "{{url}}{{uri_path}}/{{uri_page}}/",
-        "{{url}}{{uri_path}}/{{uri_page}}{{uri_extension}}",
-    )
-    image_placeholder_services: ElementsType = (
+    image_placeholder_services: ElementsType[str] = (
         "https://picsum.photos/{width}/{height}",
         "https://dummyimage.com/{width}x{height}",
         "https://placekitten.com/{width}/{height}",
-        "https://placeimg.com/{width}/{height}/any",
     )
 
     replacements: Tuple[Tuple[str, str], ...] = ()
@@ -315,6 +371,23 @@ class Provider(BaseProvider):
         """
 
         return self.random_element(self.http_methods)
+
+    def http_status_code(self, include_unassigned: bool = True) -> int:
+        """Returns random HTTP status code
+        https://www.rfc-editor.org/rfc/rfc9110#name-status-codes
+        :param include_unassigned: Whether to include status codes which have
+            not yet been assigned or are unused
+
+        :return: a random three digit status code
+        :rtype: int
+
+        :example: 404
+
+        """
+        if include_unassigned:
+            return self.random_int(min=100, max=599)
+        else:
+            return self.random_element(self.http_assigned_codes)
 
     def url(self, schemes: Optional[List[str]] = None) -> str:
         """
@@ -590,9 +663,19 @@ class Provider(BaseProvider):
             address = str(IPv6Network(address, strict=False))
         return address
 
-    def mac_address(self) -> str:
-        mac = [self.generator.random.randint(0x00, 0xFF) for _ in range(0, 6)]
-        return ":".join(map(lambda x: "%02x" % x, mac))
+    def mac_address(self, multicast: bool = False) -> str:
+        """
+        Returns a random MAC address.
+
+        :param multicast: Multicast address
+        :returns: MAC Address
+        """
+        mac = [self.generator.random.randint(0x00, 0xFF) for _ in range(0, 5)]
+        if multicast is True:
+            mac.insert(0, self.generator.random.randrange(0x01, 0xFF, 2))
+        else:
+            mac.insert(0, self.generator.random.randrange(0x00, 0xFE, 2))
+        return ":".join("%02x" % x for x in mac)
 
     def port_number(self, is_system: bool = False, is_user: bool = False, is_dynamic: bool = False) -> int:
         """Returns a network port number
@@ -625,15 +708,32 @@ class Provider(BaseProvider):
     def uri_extension(self) -> str:
         return self.random_element(self.uri_extensions)
 
-    def uri(self) -> str:
-        pattern: str = self.random_element(self.uri_formats)
-        return self.generator.parse(pattern)
+    def uri(self, schemes: Optional[List[str]] = None, deep: Optional[int] = None) -> str:
+        """
+        :param schemes: a list of strings to use as schemes, one will chosen randomly.
+            If None, it will generate http and https uris.
+            Passing an empty list will result in schemeless uri generation like "://domain.com/index.html".
+        :param deep: an integer specifying how many path components the URI should have..
+        :return: a random url string.
+        """
+        if schemes is None:
+            schemes = ["http", "https"]
+
+        pattern: str = f'{self.random_element(schemes) if schemes else ""}://{self.random_element(self.url_formats)}'
+        path = self.uri_path(deep=deep)
+        page = self.uri_page()
+        extension = self.uri_extension()
+        return f"{self.generator.parse(pattern)}{path}{page}{extension}"
 
     @slugify
     def slug(self, value: Optional[str] = None) -> str:
         """Django algorithm"""
         if value is None:
-            value = self.generator.text(20)
+            # Resolve https://github.com/joke2k/faker/issues/2103
+            # Always generate slug with ASCII characters, regardless of locale
+            ext_word_list = USLoremProvider.word_list
+
+            value = self.generator.text(20, ext_word_list=ext_word_list)
         return value
 
     def image_url(

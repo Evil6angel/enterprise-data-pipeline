@@ -2,7 +2,6 @@ from .. import Provider as AddressProvider
 
 
 class Provider(AddressProvider):
-
     street_prefixes = (
         "Av",
         "Avenida",
@@ -326,7 +325,7 @@ class Provider(AddressProvider):
         "Lituânia",
         "Luxemburgo",
         "Macau",
-        "Macedónia",
+        "Macedónia do Norte",
         "Madagáscar",
         "Malásia",
         "Malávi",

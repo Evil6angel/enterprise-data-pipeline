@@ -2,11 +2,15 @@
 
 echo "Setting up test generator environment..."
 
-# Create virtual environment if it doesn't exist
-if [ ! -d "venv" ]; then
-    echo "Creating virtual environment..."
-    python3 -m venv venv
+# Remove existing venv if it exists
+if [ -d "venv" ]; then
+    echo "Removing existing virtual environment..."
+    rm -rf venv
 fi
+
+# Create fresh virtual environment
+echo "Creating virtual environment..."
+python3 -m venv venv
 
 # Activate virtual environment
 echo "Activating virtual environment..."
@@ -14,10 +18,16 @@ source venv/bin/activate
 
 # Install dependencies
 echo "Installing required packages..."
-pip install -r requirements.txt
+pip install --no-cache-dir -r requirements.txt
+
+# Make data_generator.py executable
+chmod +x data_generator.py
+
+# Create a wrapper script that uses the virtual environment
+echo '#!/bin/bash' > run_generator.sh
+echo 'source venv/bin/activate' >> run_generator.sh
+echo 'python data_generator.py "$@"' >> run_generator.sh
+chmod +x run_generator.sh
 
 echo "Test generator setup complete!"
-echo "Run the generator with: ./data_generator.py"
-echo "You can set environment variables to control behavior:"
-echo "  - NUM_OPERATIONS: Number of operations to perform (default: 50)"
-echo "  - OPERATION_DELAY: Delay between operations in seconds (default: 1)"
+echo "Run the generator with: ./run_generator.sh"

@@ -2,13 +2,12 @@ from .. import Provider as CompanyProvider
 
 
 class Provider(CompanyProvider):
-
     formats = (
         "{{last_name}} {{company_suffix}}",
         "{{last_name}} {{last_name}} {{company_suffix}}",
         "{{last_name}}",
     )
-
+    company_prefixes = ("S.C.", "S.S.I.", "A.D.")
     company_suffixes = (
         "SRL",
         "SA",

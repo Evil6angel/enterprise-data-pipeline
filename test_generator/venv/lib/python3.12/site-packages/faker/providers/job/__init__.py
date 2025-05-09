@@ -4,7 +4,7 @@ localized = True
 
 
 class Provider(BaseProvider):
-    jobs: ElementsType = (
+    jobs: ElementsType[str] = (
         "Academic librarian",
         "Accommodation manager",
         "Accountant, chartered",
@@ -648,3 +648,13 @@ class Provider(BaseProvider):
 
     def job(self) -> str:
         return self.random_element(self.jobs)
+
+    def job_female(self) -> str:
+        if hasattr(self, "jobs_female"):
+            return self.random_element(self.jobs_female)  # type: ignore[attr-defined]
+        return self.job()
+
+    def job_male(self) -> str:
+        if hasattr(self, "jobs_male"):
+            return self.random_element(self.jobs_male)  # type: ignore[attr-defined]
+        return self.job()

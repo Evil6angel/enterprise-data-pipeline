@@ -1,0 +1,6 @@
+# Ignore Hadoop and PostgreSQL data
+hadoop/data/
+postgres/data/
+**/*.pid
+**/*.stat
+

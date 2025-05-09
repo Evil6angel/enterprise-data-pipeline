@@ -16,12 +16,15 @@ import math
 import random
 import sys
 
-from typing import TYPE_CHECKING, Dict, Hashable, Optional, Sequence, Tuple
+from typing import TYPE_CHECKING, Dict, Literal, Optional, Sequence, Tuple
 
 if TYPE_CHECKING:
     from ...factory import Generator
 
-from ...typing import HueType
+from ...typing import HueType, SeedType
+
+ColorFormat = Literal["hex", "hsl", "hsv", "rgb"]
+
 
 COLOR_MAP: Dict[str, Dict[str, Sequence[Tuple[int, int]]]] = {
     "monochrome": {
@@ -133,7 +136,7 @@ class RandomColor:
     :meth:`color() <faker.providers.color.Provider.color>` method.
     """
 
-    def __init__(self, generator: Optional["Generator"] = None, seed: Optional[Hashable] = None) -> None:
+    def __init__(self, generator: Optional["Generator"] = None, seed: Optional[SeedType] = None) -> None:
         self.colormap = COLOR_MAP
 
         # Option to specify a seed was not removed so this class
@@ -142,39 +145,66 @@ class RandomColor:
             self.random = generator.random
         else:
             self.seed = seed if seed else random.randint(0, sys.maxsize)
-            self.random = random.Random(self.seed)
-
-        for color_name, color_attrs in self.colormap.items():
-            lower_bounds: Sequence[Tuple[int, int]] = color_attrs["lower_bounds"]
-            s_min, b_max = lower_bounds[0]
-            s_max, b_min = lower_bounds[-1]
-
-            self.colormap[color_name]["saturation_range"] = [(s_min, s_max)]
-            self.colormap[color_name]["brightness_range"] = [(b_min, b_max)]
+            self.random = random.Random(int(self.seed))
 
     def generate(
         self,
         hue: Optional[HueType] = None,
         luminosity: Optional[str] = None,
-        color_format: str = "hex",
+        color_format: ColorFormat = "hex",
     ) -> str:
-        """Generate a color.
+        """Generate and format a color.
 
         Whenever :meth:`color() <faker.providers.color.Provider.color>` is
         called, the arguments used are simply passed into this method, and this
         method handles the rest.
         """
+        # Generate HSV color tuple from picked hue and luminosity
+        hsv = self.generate_hsv(hue=hue, luminosity=luminosity)
+
+        # Return the HSB/V color in the desired string format
+        return self.set_format(hsv, color_format)
+
+    def generate_hsv(
+        self,
+        hue: Optional[HueType] = None,
+        luminosity: Optional[str] = None,
+    ) -> Tuple[int, int, int]:
+        """Generate a HSV color tuple."""
         # First we pick a hue (H)
         h = self.pick_hue(hue)
 
         # Then use H to determine saturation (S)
         s = self.pick_saturation(h, hue, luminosity)
 
-        # Then use S and H to determine brightness (B).
-        b = self.pick_brightness(h, s, luminosity)
+        # Then use S and H to determine brightness/value (B/V).
+        v = self.pick_brightness(h, s, luminosity)
 
-        # Then we return the HSB color in the desired format
-        return self.set_format((h, s, b), color_format)
+        return h, s, v
+
+    def generate_rgb(
+        self,
+        hue: Optional[HueType] = None,
+        luminosity: Optional[str] = None,
+    ) -> Tuple[int, int, int]:
+        """Generate a RGB color tuple of integers."""
+        return self.hsv_to_rgb(self.generate_hsv(hue=hue, luminosity=luminosity))
+
+    def generate_rgb_float(
+        self,
+        hue: Optional[HueType] = None,
+        luminosity: Optional[str] = None,
+    ) -> Tuple[float, float, float]:
+        """Generate a RGB color tuple of floats."""
+        return self.hsv_to_rgb_float(self.generate_hsv(hue=hue, luminosity=luminosity))
+
+    def generate_hsl(
+        self,
+        hue: Optional[HueType] = None,
+        luminosity: Optional[str] = None,
+    ) -> Tuple[int, int, int]:
+        """Generate a HSL color tuple."""
+        return self.hsv_to_hsl(self.generate_hsv(hue=hue, luminosity=luminosity))
 
     def pick_hue(self, hue: Optional[HueType]) -> int:
         """Return a numerical hue value."""
@@ -226,7 +256,7 @@ class RandomColor:
 
         return self.random_within((b_min, b_max))
 
-    def set_format(self, hsv: Tuple[int, int, int], color_format: str) -> str:
+    def set_format(self, hsv: Tuple[int, int, int], color_format: ColorFormat) -> str:
         """Handle conversion of HSV values into desired format."""
         if color_format == "hsv":
             color = f"hsv({hsv[0]}, {hsv[1]}, {hsv[2]})"
@@ -261,36 +291,43 @@ class RandomColor:
 
         return 0
 
+    def _validate_color_input(self, color_input: HueType) -> Tuple[int, int]:
+        if (
+            not isinstance(color_input, (list, tuple))
+            or len(color_input) != 2
+            or any(not isinstance(c, (float, int)) for c in color_input)
+        ):
+            raise TypeError("Hue must be a valid string, numeric type, or a tuple/list of 2 numeric types.")
+
+        return color_input[0], color_input[1]
+
     def get_hue_range(self, color_input: Optional[HueType]) -> Tuple[int, int]:
         """Return the hue range for a given ``color_input``."""
+        if color_input is None:
+            return 0, 360
+
         if isinstance(color_input, (int, float)) and 0 <= color_input <= 360:
             color_input = int(color_input)
-            return (color_input, color_input)
-        elif isinstance(color_input, str) and color_input in self.colormap:
+            return color_input, color_input
+
+        if isinstance(color_input, str) and color_input in self.colormap:
             return self.colormap[color_input]["hue_range"][0]
-        elif color_input is None:
-            return (0, 360)
 
-        if isinstance(color_input, list):
-            color_input = tuple(color_input)
-        if (
-            isinstance(color_input, tuple)
-            and len(color_input) == 2
-            and all(isinstance(c, (float, int)) for c in color_input)
-        ):
-            v1 = int(color_input[0])
-            v2 = int(color_input[1])
+        color_input = self._validate_color_input(color_input)
 
-            if v2 < v1:
-                v1, v2 = v2, v1
-            v1 = max(v1, 0)
-            v2 = min(v2, 360)
-            return (v1, v2)
-        raise TypeError("Hue must be a valid string, numeric type, or a tuple/list of 2 numeric types.")
+        v1 = int(color_input[0])
+        v2 = int(color_input[1])
+
+        if v2 < v1:
+            v1, v2 = v2, v1
+        v1 = max(v1, 0)
+        v2 = min(v2, 360)
+        return v1, v2
 
     def get_saturation_range(self, hue: int) -> Tuple[int, int]:
         """Return the saturation range for a given numerical ``hue`` value."""
-        return self.get_color_info(hue)["saturation_range"][0]
+        saturation_bounds = [s for s, v in self.get_color_info(hue)["lower_bounds"]]
+        return min(saturation_bounds), max(saturation_bounds)
 
     def get_color_info(self, hue: int) -> Dict[str, Sequence[Tuple[int, int]]]:
         """Return the color info for a given numerical ``hue`` value."""
@@ -310,18 +347,27 @@ class RandomColor:
         return self.random.randint(int(r[0]), int(r[1]))
 
     @classmethod
-    def hsv_to_rgb(cls, hsv: Tuple[int, int, int]) -> Tuple[int, int, int]:
+    def hsv_to_rgb_float(cls, hsv: Tuple[int, int, int]) -> Tuple[float, float, float]:
         """Convert HSV to RGB.
 
         This method expects ``hsv`` to be a 3-tuple of H, S, and V values, and
-        it will return a 3-tuple of the equivalent R, G, and B values.
+        it will return a 3-tuple of the equivalent R, G, and B float values.
         """
         h, s, v = hsv
         h = max(h, 1)
         h = min(h, 359)
 
-        r, g, b = colorsys.hsv_to_rgb(h / 360, s / 100, v / 100)
-        return (int(r * 255), int(g * 255), int(b * 255))
+        return colorsys.hsv_to_rgb(h / 360, s / 100, v / 100)
+
+    @classmethod
+    def hsv_to_rgb(cls, hsv: Tuple[int, int, int]) -> Tuple[int, int, int]:
+        """Convert HSV to RGB.
+
+        This method expects ``hsv`` to be a 3-tuple of H, S, and V values, and
+        it will return a 3-tuple of the equivalent R, G, and B integer values.
+        """
+        r, g, b = cls.hsv_to_rgb_float(hsv)
+        return int(r * 255), int(g * 255), int(b * 255)
 
     @classmethod
     def hsv_to_hsl(cls, hsv: Tuple[int, int, int]) -> Tuple[int, int, int]:
@@ -334,7 +380,7 @@ class RandomColor:
 
         s_: float = s / 100.0
         v_: float = v / 100.0
-        l = 0.5 * (v_) * (2 - s_)  # noqa: E741
+        l = 0.5 * v_ * (2 - s_)  # noqa: E741
 
         s_ = 0.0 if l in [0, 1] else v_ * s_ / (1 - math.fabs(2 * l - 1))
-        return (int(h), int(s_ * 100), int(l * 100))
+        return int(h), int(s_ * 100), int(l * 100)

@@ -6,7 +6,6 @@ from .. import Provider as InternetProvider
 
 
 class Provider(InternetProvider):
-
     free_email_domains = (
         "hol.gr",
         "gmail.com",
@@ -47,7 +46,7 @@ def remove_accents(value: str) -> str:
             return replace[search.find(matched)]
         return matched
 
-    return re.sub(r"[{}]+".format(search), replace_accented_character, value)
+    return re.sub(rf"[{search}]+", replace_accented_character, value)
 
 
 def latinize(value: str) -> str:
@@ -68,11 +67,11 @@ def latinize(value: str) -> str:
 
     def replace_greek_character(match):
         matched = list(match.group(0))
-        value = map(lambda l: replace[search.find(l)], matched)
+        value = (replace[search.find(char)] for char in matched)
         return "".join(value)
 
     return re.sub(
-        r"[{}]+".format(search),
+        rf"[{search}]+",
         replace_greek_character,
         re.sub(
             r"([ΘΧΨθχψ]+|ΟΥ|ΑΥ|ΕΥ|Ου|Αυ|Ευ|ου|αυ|ευ)",
