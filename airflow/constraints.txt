@@ -1,0 +1,4 @@
+# Avoid packages that require gssapi/krb5
+apache-airflow-providers-apache-hdfs<2.0.0
+# Use versions that don't require krb5
+sasl<1.0.0

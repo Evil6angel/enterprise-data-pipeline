@@ -1,0 +1,8 @@
+FROM python:3.9
+
+WORKDIR /app
+COPY webhdfs_kafka_consumer.py .
+
+RUN pip install confluent-kafka requests
+
+CMD ["python", "webhdfs_kafka_consumer.py"]
