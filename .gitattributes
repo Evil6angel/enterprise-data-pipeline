@@ -1,0 +1,1 @@
+kafka_consumer/venv/lib/python3.12/site-packages/pyarrow/libarrow.so.2000 filter=lfs diff=lfs merge=lfs -text
