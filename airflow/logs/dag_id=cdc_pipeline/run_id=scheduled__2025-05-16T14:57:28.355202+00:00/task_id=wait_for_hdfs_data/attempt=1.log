@@ -1,0 +1,82 @@
+[2025-05-16T15:07:44.164+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cdc_pipeline.wait_for_hdfs_data scheduled__2025-05-16T14:57:28.355202+00:00 [queued]>
+[2025-05-16T15:07:44.174+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cdc_pipeline.wait_for_hdfs_data scheduled__2025-05-16T14:57:28.355202+00:00 [queued]>
+[2025-05-16T15:07:44.174+0000] {taskinstance.py:1359} INFO - Starting attempt 1 of 4
+[2025-05-16T15:07:44.220+0000] {taskinstance.py:1380} INFO - Executing <Task(HdfsSensor): wait_for_hdfs_data> on 2025-05-16 14:57:28.355202+00:00
+[2025-05-16T15:07:44.230+0000] {standard_task_runner.py:57} INFO - Started process 4400 to run task
+[2025-05-16T15:07:44.235+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'cdc_pipeline', 'wait_for_hdfs_data', 'scheduled__2025-05-16T14:57:28.355202+00:00', '--job-id', '141', '--raw', '--subdir', 'DAGS_FOLDER/cdc_pipeline_dag.py', '--cfg-path', '/tmp/tmpro91qdq1']
+[2025-05-16T15:07:44.237+0000] {standard_task_runner.py:85} INFO - Job 141: Subtask wait_for_hdfs_data
+[2025-05-16T15:07:44.293+0000] {task_command.py:415} INFO - Running <TaskInstance: cdc_pipeline.wait_for_hdfs_data scheduled__2025-05-16T14:57:28.355202+00:00 [running]> on host 2325534d36fc
+[2025-05-16T15:07:44.378+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cdc_pipeline' AIRFLOW_CTX_TASK_ID='wait_for_hdfs_data' AIRFLOW_CTX_EXECUTION_DATE='2025-05-16T14:57:28.355202+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-05-16T14:57:28.355202+00:00'
+[2025-05-16T15:07:44.381+0000] {logging_mixin.py:151} WARNING - /home/***/.local/lib/python3.8/site-packages/***/providers/apache/hdfs/hooks/hdfs.py:78 RemovedInAirflow3Warning: `BaseHook.get_connections` method will be deprecated in the future.Please use `BaseHook.get_connection` instead.
+[2025-05-16T15:07:44.389+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:07:44.416+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:07:44.419+0000] {logging_mixin.py:151} WARNING - /home/***/.local/lib/python3.8/site-packages/snakebite/channel.py:414 RuntimeWarning: Unexpected end-group tag: Not all data was converted
+[2025-05-16T15:07:46.428+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:07:46.429+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:07:48.453+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:07:48.455+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:07:50.513+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:07:50.519+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:07:52.538+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:07:52.539+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:07:54.553+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:07:54.554+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:07:56.566+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:07:56.567+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:07:58.579+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:07:58.580+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:00.592+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:00.593+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:02.624+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:02.625+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:04.666+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:04.669+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:06.690+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:06.690+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:08.702+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:08.702+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:10.716+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:10.716+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:12.727+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:12.728+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:14.739+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:14.740+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:16.777+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:16.783+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:18.822+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:18.823+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:20.838+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:20.839+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:22.852+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:22.855+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:24.868+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:24.869+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:26.880+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:26.880+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:28.902+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:28.903+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:30.954+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:30.955+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:33.025+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:33.027+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:35.041+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:35.041+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:37.060+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:37.063+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:39.078+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:39.079+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:41.093+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:41.095+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:43.118+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:43.119+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:45.133+0000] {base.py:73} INFO - Using connection ID 'hdfs_default' for task execution.
+[2025-05-16T15:08:45.134+0000] {hdfs.py:106} INFO - Poking for file /data/cdc/output.json
+[2025-05-16T15:08:45.139+0000] {taskinstance.py:1935} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/sensors/base.py", line 274, in execute
+    raise AirflowSensorTimeout(message)
+airflow.exceptions.AirflowSensorTimeout: Sensor has timed out; run duration of 60.76004176800052 seconds exceeds the specified timeout of 60.0.
+[2025-05-16T15:08:45.148+0000] {taskinstance.py:1398} INFO - Immediate failure requested. Marking task as FAILED. dag_id=cdc_pipeline, task_id=wait_for_hdfs_data, execution_date=20250516T145728, start_date=20250516T150744, end_date=20250516T150845
+[2025-05-16T15:08:45.245+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 141 for task wait_for_hdfs_data (Sensor has timed out; run duration of 60.76004176800052 seconds exceeds the specified timeout of 60.0.; 4400)
+[2025-05-16T15:08:45.359+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2025-05-16T15:08:45.533+0000] {taskinstance.py:2776} INFO - 0 downstream tasks scheduled from follow-on schedule check

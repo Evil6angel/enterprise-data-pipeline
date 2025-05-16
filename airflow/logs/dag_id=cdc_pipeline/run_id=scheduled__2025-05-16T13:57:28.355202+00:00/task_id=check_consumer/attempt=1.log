@@ -1,0 +1,28 @@
+[2025-05-16T14:07:35.143+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cdc_pipeline.check_consumer scheduled__2025-05-16T13:57:28.355202+00:00 [queued]>
+[2025-05-16T14:07:35.239+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cdc_pipeline.check_consumer scheduled__2025-05-16T13:57:28.355202+00:00 [queued]>
+[2025-05-16T14:07:35.240+0000] {taskinstance.py:1359} INFO - Starting attempt 1 of 4
+[2025-05-16T14:07:35.354+0000] {taskinstance.py:1380} INFO - Executing <Task(BashOperator): check_consumer> on 2025-05-16 13:57:28.355202+00:00
+[2025-05-16T14:07:35.424+0000] {standard_task_runner.py:57} INFO - Started process 1131 to run task
+[2025-05-16T14:07:35.430+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'cdc_pipeline', 'check_consumer', 'scheduled__2025-05-16T13:57:28.355202+00:00', '--job-id', '38', '--raw', '--subdir', 'DAGS_FOLDER/cdc_pipeline_dag.py', '--cfg-path', '/tmp/tmpzb5sfvx4']
+[2025-05-16T14:07:35.437+0000] {standard_task_runner.py:85} INFO - Job 38: Subtask check_consumer
+[2025-05-16T14:07:36.026+0000] {task_command.py:415} INFO - Running <TaskInstance: cdc_pipeline.check_consumer scheduled__2025-05-16T13:57:28.355202+00:00 [running]> on host 2325534d36fc
+[2025-05-16T14:07:36.917+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cdc_pipeline' AIRFLOW_CTX_TASK_ID='check_consumer' AIRFLOW_CTX_EXECUTION_DATE='2025-05-16T13:57:28.355202+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-05-16T13:57:28.355202+00:00'
+[2025-05-16T14:07:36.928+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-05-16T14:07:36.929+0000] {subprocess.py:75} INFO - Running command: ['/bin/bash', '-c', 'docker ps | grep kafka-consumer > /dev/null || echo "Restarting consumer" && docker start kafka-consumer || docker run -d --name kafka-consumer --network=data_pipeline_network -e KAFKA_BOOTSTRAP_SERVERS=kafka:9092 -e HDFS_WEBHDFS_URL=http://namenode:9870/webhdfs/v1 kafka-hdfs-consumer']
+[2025-05-16T14:07:37.039+0000] {subprocess.py:86} INFO - Output:
+[2025-05-16T14:07:37.343+0000] {subprocess.py:93} INFO - Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+[2025-05-16T14:07:37.422+0000] {subprocess.py:93} INFO - Restarting consumer
+[2025-05-16T14:07:37.651+0000] {subprocess.py:93} INFO - Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+[2025-05-16T14:07:37.652+0000] {subprocess.py:93} INFO - Error: failed to start containers: kafka-consumer
+[2025-05-16T14:07:37.826+0000] {subprocess.py:93} INFO - docker: Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?.
+[2025-05-16T14:07:37.826+0000] {subprocess.py:93} INFO - See 'docker run --help'.
+[2025-05-16T14:07:37.829+0000] {subprocess.py:97} INFO - Command exited with return code 125
+[2025-05-16T14:07:37.926+0000] {taskinstance.py:1935} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/bash.py", line 210, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 125.
+[2025-05-16T14:07:37.943+0000] {taskinstance.py:1398} INFO - Marking task as UP_FOR_RETRY. dag_id=cdc_pipeline, task_id=check_consumer, execution_date=20250516T135728, start_date=20250516T140735, end_date=20250516T140737
+[2025-05-16T14:07:38.123+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 38 for task check_consumer (Bash command failed. The command returned a non-zero exit code 125.; 1131)
+[2025-05-16T14:07:38.215+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2025-05-16T14:07:38.317+0000] {taskinstance.py:2776} INFO - 0 downstream tasks scheduled from follow-on schedule check

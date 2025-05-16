@@ -1,0 +1,23 @@
+[2025-05-16T14:02:30.416+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cdc_pipeline.check_namenode scheduled__2025-05-16T13:47:28.355202+00:00 [queued]>
+[2025-05-16T14:02:30.540+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cdc_pipeline.check_namenode scheduled__2025-05-16T13:47:28.355202+00:00 [queued]>
+[2025-05-16T14:02:30.542+0000] {taskinstance.py:1359} INFO - Starting attempt 4 of 4
+[2025-05-16T14:02:30.943+0000] {taskinstance.py:1380} INFO - Executing <Task(BashOperator): check_namenode> on 2025-05-16 13:47:28.355202+00:00
+[2025-05-16T14:02:31.041+0000] {standard_task_runner.py:57} INFO - Started process 767 to run task
+[2025-05-16T14:02:31.119+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'cdc_pipeline', 'check_namenode', 'scheduled__2025-05-16T13:47:28.355202+00:00', '--job-id', '26', '--raw', '--subdir', 'DAGS_FOLDER/cdc_pipeline_dag.py', '--cfg-path', '/tmp/tmpjlv81k7g']
+[2025-05-16T14:02:31.136+0000] {standard_task_runner.py:85} INFO - Job 26: Subtask check_namenode
+[2025-05-16T14:02:31.644+0000] {task_command.py:415} INFO - Running <TaskInstance: cdc_pipeline.check_namenode scheduled__2025-05-16T13:47:28.355202+00:00 [running]> on host 2325534d36fc
+[2025-05-16T14:02:32.334+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cdc_pipeline' AIRFLOW_CTX_TASK_ID='check_namenode' AIRFLOW_CTX_EXECUTION_DATE='2025-05-16T13:47:28.355202+00:00' AIRFLOW_CTX_TRY_NUMBER='4' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-05-16T13:47:28.355202+00:00'
+[2025-05-16T14:02:32.341+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-05-16T14:02:32.343+0000] {subprocess.py:75} INFO - Running command: ['/bin/bash', '-c', 'docker exec namenode hdfs dfsadmin -report > /dev/null || exit 1']
+[2025-05-16T14:02:32.722+0000] {subprocess.py:86} INFO - Output:
+[2025-05-16T14:02:33.267+0000] {subprocess.py:93} INFO - Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?
+[2025-05-16T14:02:33.343+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2025-05-16T14:02:33.445+0000] {taskinstance.py:1935} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/bash.py", line 210, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2025-05-16T14:02:33.517+0000] {taskinstance.py:1398} INFO - Marking task as FAILED. dag_id=cdc_pipeline, task_id=check_namenode, execution_date=20250516T134728, start_date=20250516T140230, end_date=20250516T140233
+[2025-05-16T14:02:33.639+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 26 for task check_namenode (Bash command failed. The command returned a non-zero exit code 1.; 767)
+[2025-05-16T14:02:33.836+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2025-05-16T14:02:34.341+0000] {taskinstance.py:2776} INFO - 0 downstream tasks scheduled from follow-on schedule check

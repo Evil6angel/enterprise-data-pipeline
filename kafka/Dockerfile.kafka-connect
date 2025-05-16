@@ -1,0 +1,22 @@
+FROM debezium/connect:2.1
+
+USER root
+
+# Create the directory for connector
+RUN mkdir -p /kafka/connect/kafka-connect-hdfs
+
+# Download connector zip file
+RUN curl -fsSL https://d1i4a15mxbxib1.cloudfront.net/api/plugins/confluentinc/kafka-connect-hdfs/versions/10.5.3/confluentinc-kafka-connect-hdfs-10.5.3.zip -o /tmp/hdfs-connector.zip
+
+# Install unzip (try multiple package managers)
+RUN (command -v dnf && dnf install -y unzip) || \
+    (command -v yum && yum install -y unzip) || \
+    (command -v microdnf && microdnf install -y unzip) || \
+    echo "Unzip already installed or package manager not found"
+
+# Extract connector
+RUN unzip /tmp/hdfs-connector.zip -d /kafka/connect/ && \
+    mv /kafka/connect/confluentinc-kafka-connect-hdfs-10.5.3/* /kafka/connect/kafka-connect-hdfs/ && \
+    rm -rf /tmp/hdfs-connector.zip /kafka/connect/confluentinc-kafka-connect-hdfs-10.5.3
+
+USER 1001

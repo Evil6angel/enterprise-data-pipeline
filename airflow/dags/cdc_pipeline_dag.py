@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
-from airflow.sensors.external_task import ExternalTaskSensor
 from airflow.providers.apache.hdfs.sensors.hdfs import HdfsSensor
 
 import sys
@@ -30,28 +29,34 @@ dag = DAG(
     tags=['cdc', 'kafka', 'hdfs'],
 )
 
-# Check that all services are healthy
+# Check that Postgres is ready using pg_isready
 check_postgres = BashOperator(
     task_id='check_postgres',
-    bash_command='docker exec postgres pg_isready -U postgres || exit 1',
+    bash_command='pg_isready -h postgres -U postgres',
     dag=dag,
 )
 
+# Check if Kafka is reachable by listing topics (no docker exec)
+# This assumes 'kafka-topics.sh' is available in the Airflow container; 
+# if not, use a PythonOperator or install kafka-python and use it.
 check_kafka = BashOperator(
     task_id='check_kafka',
-    bash_command='docker exec kafka kafka-topics.sh --bootstrap-server kafka:9092 --list > /dev/null || exit 1',
+    bash_command='nc -z kafka 9092',  # Simple port check; replace with kafka-python for a real health check
     dag=dag,
 )
 
+# Check if HDFS Namenode is up by checking the web UI port
 check_namenode = BashOperator(
     task_id='check_namenode',
-    bash_command='docker exec namenode hdfs dfsadmin -report > /dev/null || exit 1',
+    bash_command='nc -z namenode 9870',  # Namenode HTTP UI port
     dag=dag,
 )
 
+# Check if the consumer service (container) is running using a network or process check
+# Example: Check if the expected consumer port is open (replace with actual port if different)
 check_consumer = BashOperator(
     task_id='check_consumer',
-    bash_command='docker ps | grep kafka-consumer > /dev/null || echo "Restarting consumer" && docker start kafka-consumer || docker run -d --name kafka-consumer --network=data_pipeline_network -e KAFKA_BOOTSTRAP_SERVERS=kafka:9092 -e HDFS_WEBHDFS_URL=http://namenode:9870/webhdfs/v1 kafka-hdfs-consumer',
+    bash_command='nc -z kafka-connect 8083 || (echo "Kafka Connect not running!" && exit 1)',
     dag=dag,
 )
 
@@ -62,10 +67,13 @@ run_test_generator = PythonOperator(
     dag=dag,
 )
 
-# Check if data was written to HDFS within a reasonable timeframe
-wait_for_hdfs_data = BashOperator(
+# Wait for HDFS to have the output file using HdfsSensor (recommended) instead of bash polling with docker exec
+wait_for_hdfs_data = HdfsSensor(
     task_id='wait_for_hdfs_data',
-    bash_command='timeout 60s bash -c \'until docker exec namenode hdfs dfs -ls /data/cdc/output.json; do sleep 2; done\'',
+    filepath='/data/cdc/output.json',
+    hdfs_conn_id='hdfs_default',
+    timeout=60,
+    poke_interval=2,
     dag=dag,
 )
 

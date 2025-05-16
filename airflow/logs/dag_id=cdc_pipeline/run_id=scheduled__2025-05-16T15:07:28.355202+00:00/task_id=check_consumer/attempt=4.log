@@ -1,0 +1,24 @@
+[2025-05-16T15:20:48.141+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cdc_pipeline.check_consumer scheduled__2025-05-16T15:07:28.355202+00:00 [queued]>
+[2025-05-16T15:20:48.217+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cdc_pipeline.check_consumer scheduled__2025-05-16T15:07:28.355202+00:00 [queued]>
+[2025-05-16T15:20:48.217+0000] {taskinstance.py:1359} INFO - Starting attempt 4 of 4
+[2025-05-16T15:20:48.228+0000] {taskinstance.py:1380} INFO - Executing <Task(BashOperator): check_consumer> on 2025-05-16 15:07:28.355202+00:00
+[2025-05-16T15:20:48.237+0000] {standard_task_runner.py:57} INFO - Started process 5005 to run task
+[2025-05-16T15:20:48.243+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'cdc_pipeline', 'check_consumer', 'scheduled__2025-05-16T15:07:28.355202+00:00', '--job-id', '151', '--raw', '--subdir', 'DAGS_FOLDER/cdc_pipeline_dag.py', '--cfg-path', '/tmp/tmpaos1a1om']
+[2025-05-16T15:20:48.245+0000] {standard_task_runner.py:85} INFO - Job 151: Subtask check_consumer
+[2025-05-16T15:20:48.356+0000] {task_command.py:415} INFO - Running <TaskInstance: cdc_pipeline.check_consumer scheduled__2025-05-16T15:07:28.355202+00:00 [running]> on host 2325534d36fc
+[2025-05-16T15:20:48.648+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cdc_pipeline' AIRFLOW_CTX_TASK_ID='check_consumer' AIRFLOW_CTX_EXECUTION_DATE='2025-05-16T15:07:28.355202+00:00' AIRFLOW_CTX_TRY_NUMBER='4' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-05-16T15:07:28.355202+00:00'
+[2025-05-16T15:20:48.651+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-05-16T15:20:48.653+0000] {subprocess.py:75} INFO - Running command: ['/bin/bash', '-c', 'nc -z kafka-connect 8083 || (echo "Kafka Connect not running!" && exit 1)']
+[2025-05-16T15:20:48.669+0000] {subprocess.py:86} INFO - Output:
+[2025-05-16T15:20:48.707+0000] {subprocess.py:93} INFO - nc: getaddrinfo for host "kafka-connect" port 8083: Name or service not known
+[2025-05-16T15:20:48.707+0000] {subprocess.py:93} INFO - Kafka Connect not running!
+[2025-05-16T15:20:48.708+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2025-05-16T15:20:48.716+0000] {taskinstance.py:1935} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/bash.py", line 210, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2025-05-16T15:20:48.719+0000] {taskinstance.py:1398} INFO - Marking task as FAILED. dag_id=cdc_pipeline, task_id=check_consumer, execution_date=20250516T150728, start_date=20250516T152048, end_date=20250516T152048
+[2025-05-16T15:20:48.728+0000] {standard_task_runner.py:104} ERROR - Failed to execute job 151 for task check_consumer (Bash command failed. The command returned a non-zero exit code 1.; 5005)
+[2025-05-16T15:20:48.738+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 1
+[2025-05-16T15:20:48.761+0000] {taskinstance.py:2776} INFO - 0 downstream tasks scheduled from follow-on schedule check

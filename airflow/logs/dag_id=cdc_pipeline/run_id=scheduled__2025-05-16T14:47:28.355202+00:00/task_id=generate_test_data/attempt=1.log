@@ -1,0 +1,21 @@
+[2025-05-16T14:57:44.751+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cdc_pipeline.generate_test_data scheduled__2025-05-16T14:47:28.355202+00:00 [queued]>
+[2025-05-16T14:57:44.763+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cdc_pipeline.generate_test_data scheduled__2025-05-16T14:47:28.355202+00:00 [queued]>
+[2025-05-16T14:57:44.763+0000] {taskinstance.py:1359} INFO - Starting attempt 1 of 4
+[2025-05-16T14:57:44.779+0000] {taskinstance.py:1380} INFO - Executing <Task(PythonOperator): generate_test_data> on 2025-05-16 14:47:28.355202+00:00
+[2025-05-16T14:57:44.823+0000] {standard_task_runner.py:57} INFO - Started process 3933 to run task
+[2025-05-16T14:57:44.827+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'cdc_pipeline', 'generate_test_data', 'scheduled__2025-05-16T14:47:28.355202+00:00', '--job-id', '128', '--raw', '--subdir', 'DAGS_FOLDER/cdc_pipeline_dag.py', '--cfg-path', '/tmp/tmpk_k_69lz']
+[2025-05-16T14:57:44.831+0000] {standard_task_runner.py:85} INFO - Job 128: Subtask generate_test_data
+[2025-05-16T14:57:44.921+0000] {task_command.py:415} INFO - Running <TaskInstance: cdc_pipeline.generate_test_data scheduled__2025-05-16T14:47:28.355202+00:00 [running]> on host 2325534d36fc
+[2025-05-16T14:57:45.034+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cdc_pipeline' AIRFLOW_CTX_TASK_ID='generate_test_data' AIRFLOW_CTX_EXECUTION_DATE='2025-05-16T14:47:28.355202+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='scheduled__2025-05-16T14:47:28.355202+00:00'
+[2025-05-16T14:57:45.036+0000] {data_generator.py:14} INFO - Starting test data generation
+[2025-05-16T14:57:45.037+0000] {data_generator.py:32} INFO - Connecting to PostgreSQL...
+[2025-05-16T14:57:45.042+0000] {data_generator.py:34} INFO - Connected to PostgreSQL
+[2025-05-16T14:57:45.051+0000] {data_generator.py:60} INFO - Created customer: Christopher Silva (ID: 7)
+[2025-05-16T14:57:45.055+0000] {data_generator.py:60} INFO - Created customer: Samantha Mcclure (ID: 8)
+[2025-05-16T14:57:45.058+0000] {data_generator.py:60} INFO - Created customer: Dennis Robertson (ID: 9)
+[2025-05-16T14:57:45.062+0000] {data_generator.py:75} INFO - Updated customer 7 with new email: frankgary@example.com
+[2025-05-16T14:57:45.063+0000] {data_generator.py:91} INFO - Test data generation completed successfully
+[2025-05-16T14:57:45.064+0000] {python.py:194} INFO - Done. Returned value was: True
+[2025-05-16T14:57:45.102+0000] {taskinstance.py:1398} INFO - Marking task as SUCCESS. dag_id=cdc_pipeline, task_id=generate_test_data, execution_date=20250516T144728, start_date=20250516T145744, end_date=20250516T145745
+[2025-05-16T14:57:45.165+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2025-05-16T14:57:45.207+0000] {taskinstance.py:2776} INFO - 1 downstream tasks scheduled from follow-on schedule check

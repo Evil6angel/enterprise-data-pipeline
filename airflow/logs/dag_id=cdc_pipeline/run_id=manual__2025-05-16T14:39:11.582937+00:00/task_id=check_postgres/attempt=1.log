@@ -1,0 +1,17 @@
+[2025-05-16T14:39:18.958+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: cdc_pipeline.check_postgres manual__2025-05-16T14:39:11.582937+00:00 [queued]>
+[2025-05-16T14:39:19.139+0000] {taskinstance.py:1157} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: cdc_pipeline.check_postgres manual__2025-05-16T14:39:11.582937+00:00 [queued]>
+[2025-05-16T14:39:19.140+0000] {taskinstance.py:1359} INFO - Starting attempt 1 of 4
+[2025-05-16T14:39:19.457+0000] {taskinstance.py:1380} INFO - Executing <Task(BashOperator): check_postgres> on 2025-05-16 14:39:11.582937+00:00
+[2025-05-16T14:39:19.524+0000] {standard_task_runner.py:57} INFO - Started process 3080 to run task
+[2025-05-16T14:39:19.543+0000] {standard_task_runner.py:84} INFO - Running: ['***', 'tasks', 'run', 'cdc_pipeline', 'check_postgres', 'manual__2025-05-16T14:39:11.582937+00:00', '--job-id', '106', '--raw', '--subdir', 'DAGS_FOLDER/cdc_pipeline_dag.py', '--cfg-path', '/tmp/tmpfw3pokm5']
+[2025-05-16T14:39:19.549+0000] {standard_task_runner.py:85} INFO - Job 106: Subtask check_postgres
+[2025-05-16T14:39:19.916+0000] {task_command.py:415} INFO - Running <TaskInstance: cdc_pipeline.check_postgres manual__2025-05-16T14:39:11.582937+00:00 [running]> on host 2325534d36fc
+[2025-05-16T14:39:20.553+0000] {taskinstance.py:1660} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='***' AIRFLOW_CTX_DAG_ID='cdc_pipeline' AIRFLOW_CTX_TASK_ID='check_postgres' AIRFLOW_CTX_EXECUTION_DATE='2025-05-16T14:39:11.582937+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-05-16T14:39:11.582937+00:00'
+[2025-05-16T14:39:20.558+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2025-05-16T14:39:20.560+0000] {subprocess.py:75} INFO - Running command: ['/bin/bash', '-c', 'pg_isready -h postgres -U postgres']
+[2025-05-16T14:39:20.688+0000] {subprocess.py:86} INFO - Output:
+[2025-05-16T14:39:22.329+0000] {subprocess.py:93} INFO - postgres:5432 - accepting connections
+[2025-05-16T14:39:22.342+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2025-05-16T14:39:22.490+0000] {taskinstance.py:1398} INFO - Marking task as SUCCESS. dag_id=cdc_pipeline, task_id=check_postgres, execution_date=20250516T143911, start_date=20250516T143918, end_date=20250516T143922
+[2025-05-16T14:39:22.558+0000] {local_task_job_runner.py:228} INFO - Task exited with return code 0
+[2025-05-16T14:39:22.728+0000] {taskinstance.py:2776} INFO - 1 downstream tasks scheduled from follow-on schedule check
